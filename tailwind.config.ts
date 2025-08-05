@@ -9,18 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Your custom palette from PRD
-        primary: {
-          blue: '#0070f3',
-        },
-        secondary: {
-          blue: '#0366d6',
-        },
-        accent: {
-          purple: '#8b5cf6',
-          green: '#10b981',
-          orange: '#f59e0b',
-        },
+        'primary-blue': '#0070f3',
+        'secondary-blue': '#0366d6',
+        'accent-purple': '#8b5cf6',
+        'accent-green': '#10b981',
+        'accent-orange': '#f59e0b',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
