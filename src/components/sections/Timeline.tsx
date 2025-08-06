@@ -1,4 +1,13 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef } from 'react';
+
 export default function Timeline() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
   const timelineEvents = [
     {
       id: 1,
@@ -26,14 +35,6 @@ export default function Timeline() {
     },
     {
       id: 4,
-      date: "Jun 2024",
-      title: "Refine Barbers Booking Website",
-      description: "Built professional booking website for barber shop with appointment scheduling, responsive design, and modern user interface.",
-      type: "project",
-      status: "completed"
-    },
-    {
-      id: 5,
       date: "Jun - Jul 2024",
       title: "Python Backend Development",
       description: "Developed Fitness Tracker Backend using Python with terminal interface and Google Sheets API integration for data management.",
@@ -41,15 +42,15 @@ export default function Timeline() {
       status: "completed"
     },
     {
-      id: 6,
-      date: "Jul - Dec 2024",
+      id: 5,
+      date: "Jul - Nov 2024",
       title: "Django Full Stack - Golf Booking System",
       description: "Built comprehensive Golf Booking System using Django framework with full CRUD functionality, user authentication, and database integration.",
       type: "project",
       status: "completed"
     },
     {
-      id: 7,
+      id: 6,
       date: "Nov 2024 - Feb 2025",
       title: "Specialization: Predictive Analytics & ML",
       description: "Completed House Price Prediction project using Python, scikit-learn, and machine learning techniques for predictive analytics specialization.",
@@ -57,18 +58,26 @@ export default function Timeline() {
       status: "completed"
     },
     {
-      id: 8,
+      id: 7,
       date: "Feb 2025",
       title: "Code Institute Program Completion",
-      description: "Successfully completed 12-month intensive program with 5+ major projects spanning full-stack development and machine learning.",
+      description: "Successfully completed 18-month intensive program with 5+ major projects spanning full-stack development and machine learning.",
       type: "education",
       status: "completed"
     },
     {
-      id: 9,
-      date: "Feb - Jul 2025",
+      id: 8,
+      date: "Feb - Jun 2025",
       title: "React Portfolio Development",
       description: "Built first React-based portfolio website, learning component-based architecture and modern JavaScript frameworks.",
+      type: "project",
+      status: "completed"
+    },
+    {
+      id: 9,
+      date: "Jun 2025",
+      title: "Refine Barbers Booking Website",
+      description: "Built professional booking website for barber shop with appointment scheduling, responsive design, and modern user interface using React.",
       type: "project",
       status: "completed"
     },
@@ -91,8 +100,8 @@ export default function Timeline() {
     {
       id: 12,
       date: "Aug 2025",
-      title: "AWS Developer Associate Certification",
-      description: "Pursuing AWS Developer Associate certification to expand cloud computing and DevOps capabilities.",
+      title: "AWS Cloud Practitioner Certification",
+      description: "Pursuing AWS Cloud Practitioner certification to expand cloud computing and DevOps capabilities.",
       type: "certification",
       status: "in-progress"
     },
@@ -103,56 +112,106 @@ export default function Timeline() {
       description: "Planning to achieve AWS Solutions Architect Associate certification for advanced cloud architecture skills.",
       type: "certification",
       status: "planned"
-    },
-    {
-      id: 14,
-      date: "Q4 2025",
-      title: "AWS Security Specialty",
-      description: "Planning to achieve AWS Security Specialty for advanced cloud security expertise.",
-      type: "certification",
-      status: "planned"
     }
   ];
 
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return <div className="w-3 h-3 bg-green-500 rounded-full"></div>;
+      case 'in-progress':
+        return <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>;
+      case 'planned':
+        return <div className="w-3 h-3 bg-gray-400 rounded-full"></div>;
+      default:
+        return <div className="w-3 h-3 bg-gray-300 rounded-full"></div>;
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'education':
+        return 'bg-purple-100 text-purple-800';
+      case 'project':
+        return 'bg-blue-100 text-blue-800';
+      case 'milestone':
+        return 'bg-green-100 text-green-800';
+      case 'certification':
+        return 'bg-orange-100 text-orange-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const timelineVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <section id="experience" className="py-20 bg-gray-50">
+    <section id="experience" className="py-20 bg-gray-50" ref={ref}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Professional Journey
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             18+ months of continuous learning, building, and growing as a developer
           </p>
-        </div>
+        </motion.div>
 
         <div className="relative">
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+          {/* Timeline line */}
+          <motion.div 
+            className="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-300"
+            initial={{ height: 0 }}
+            animate={isInView ? { height: "100%" } : { height: 0 }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          />
 
           <div className="space-y-8">
-            {timelineEvents.map((event) => (
-              <div key={event.id} className="relative flex items-start">
-                <div className="absolute left-6 flex items-center justify-center">
-                  <div className={`w-3 h-3 rounded-full ${
-                    event.status === 'completed' ? 'bg-green-500' :
-                    event.status === 'in-progress' ? 'bg-blue-500' :
-                    'bg-gray-400'
-                  }`}></div>
-                </div>
+            {timelineEvents.map((event, index) => (
+              <motion.div 
+                key={event.id} 
+                className="relative flex items-start"
+                variants={timelineVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: index * 1.2 + 0.8 // 1.2 second delay between each item, starting after 0.8s
+                }}
+              >
+                {/* Timeline dot */}
+                <motion.div 
+                  className="absolute left-6 flex items-center justify-center"
+                  initial={{ scale: 0 }}
+                  animate={isInView ? { scale: 1 } : { scale: 0 }}
+                  transition={{ 
+                    duration: 0.3, 
+                    delay: index * 1.2 + 1.2 // Dot appears slightly after the card
+                  }}
+                >
+                  {getStatusIcon(event.status)}
+                </motion.div>
 
-                <div className="ml-16">
-                  <div className="bg-white rounded-lg shadow-sm border p-6">
+                {/* Content */}
+                <motion.div 
+                  className="ml-16"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow duration-300">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-sm font-medium text-gray-600">
                         {event.date}
                       </span>
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        event.type === 'education' ? 'bg-purple-100 text-purple-800' :
-                        event.type === 'project' ? 'bg-blue-100 text-blue-800' :
-                        event.type === 'milestone' ? 'bg-green-100 text-green-800' :
-                        event.type === 'certification' ? 'bg-orange-100 text-orange-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeColor(event.type)}`}>
                         {event.type}
                       </span>
                     </div>
@@ -181,8 +240,8 @@ export default function Timeline() {
                       </div>
                     )}
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>
