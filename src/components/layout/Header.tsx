@@ -2,17 +2,39 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   const navigation = [
-    { name: "Home", href: "#" },
-    { name: "Projects", href: "#projects" },
-    { name: "Skills", href: "#skills" },
-    { name: "Experience", href: "#experience" },
-    { name: "Contact", href: "#contact" },
+    {
+      name: "Home",
+      href: pathname === "/" ? "#" : "/",
+      isSection: pathname === "/",
+    },
+    {
+      name: "Projects",
+      href: pathname === "/" ? "#projects" : "/#projects",
+      isSection: true,
+    },
+    {
+      name: "Skills",
+      href: pathname === "/" ? "#skills" : "/#skills",
+      isSection: true,
+    },
+    {
+      name: "Experience",
+      href: pathname === "/" ? "#experience" : "/#experience",
+      isSection: true,
+    },
+    {
+      name: "Contact",
+      href: pathname === "/" ? "#contact" : "/#contact",
+      isSection: true,
+    },
   ];
 
   useEffect(() => {

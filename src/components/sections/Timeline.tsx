@@ -100,8 +100,8 @@ export default function Timeline() {
     {
       id: 12,
       date: "Aug 2025",
-      title: "AWS Cloud Practitioner Certification",
-      description: "Pursuing AWS Cloud Practitioner certification to expand cloud computing and DevOps capabilities.",
+      title: "AWS Developer – Associate",
+      description: "Pursuing AWS Developer – Associate certification to expand cloud computing skills and enhance backend development capabilities.",
       type: "certification",
       status: "in-progress"
     },
@@ -112,7 +112,15 @@ export default function Timeline() {
       description: "Planning to achieve AWS Solutions Architect Associate certification for advanced cloud architecture skills.",
       type: "certification",
       status: "planned"
-    }
+    },
+    {
+      id: 14,
+      date: "Aug 2025",
+      title: "AWS Security – Specialty",
+      description: "Pursuing AWS Security – Specialty certification to enhance cloud security expertise.",
+      type: "certification",
+      status: "in-progress"
+    },
   ];
 
   const getStatusIcon = (status: string) => {
