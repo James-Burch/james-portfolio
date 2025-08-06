@@ -1,7 +1,8 @@
-import Header from "../components/layout/Header";
-import Hero from "../components/sections/Hero";
-import Projects from "../components/sections/Projects";
-import Skills from "../components/sections/Skills";
+import Header from '../components/layout/Header';
+import Hero from '../components/sections/Hero';
+import Projects from '../components/sections/Projects';
+import Skills from '../components/sections/Skills';
+import Timeline from '../components/sections/Timeline';
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Hero />
       <Projects />
       <Skills />
+      <Timeline />
     </div>
   );
 }
