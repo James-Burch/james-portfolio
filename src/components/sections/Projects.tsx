@@ -36,9 +36,15 @@ export default function Projects() {
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Featured Projects
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
             Real-world applications showcasing full-stack development and data science skills
           </p>
+          <a
+            href="/projects"
+            className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-lg"
+          >
+            View All Projects →
+          </a>
         </div>
 
         {/* Mobile/Tablet: Grid layout */}
