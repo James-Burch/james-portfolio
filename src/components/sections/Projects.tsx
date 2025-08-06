@@ -1,4 +1,13 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef } from 'react';
+
 export default function Projects() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
   const projects = [
     {
       id: 1,
@@ -6,8 +15,7 @@ export default function Projects() {
       description: "Machine learning model using Python and scikit-learn to predict house prices with 85% accuracy. Features data preprocessing, model training, and interactive visualization.",
       technologies: ["Python", "Scikit-learn", "Pandas", "NumPy", "Matplotlib"],
       category: "Machine Learning",
-      status: "completed",
-      image: "/api/placeholder/600/400"
+      status: "completed"
     },
     {
       id: 2,
@@ -15,8 +23,7 @@ export default function Projects() {
       description: "Full-stack booking website built with TypeScript and modern web technologies. Features appointment scheduling, user authentication, and responsive design.",
       technologies: ["TypeScript", "React", "Node.js", "PostgreSQL", "CSS"],
       category: "Full-Stack",
-      status: "completed",
-      image: "/api/placeholder/600/400"
+      status: "completed"
     },
     {
       id: 3,
@@ -24,15 +31,43 @@ export default function Projects() {
       description: "Comprehensive booking system for golf courses with user management, tee time scheduling, and payment integration.",
       technologies: ["JavaScript", "React", "Express.js", "MongoDB"],
       category: "Full-Stack",
-      status: "completed",
-      image: "/api/placeholder/600/400"
+      status: "completed"
     }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  };
+
+  const projectVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 }
+  };
+
+  const projectTransition = {
+    duration: 0.6
+  };
+
+  const cardHover = {
+    y: -10,
+    transition: { duration: 0.3 }
+  };
+
   return (
-    <section id="projects" className="py-20 bg-gray-50">
+    <section id="projects" className="py-20 bg-gray-50" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Featured Projects
           </h2>
@@ -45,12 +80,23 @@ export default function Projects() {
           >
             View All Projects →
           </a>
-        </div>
+        </motion.div>
 
         {/* Mobile/Tablet: Grid layout */}
-        <div className="lg:hidden grid md:grid-cols-2 gap-8">
+        <motion.div 
+          className="lg:hidden grid md:grid-cols-2 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           {projects.map((project) => (
-            <div key={project.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+            <motion.div 
+              key={project.id} 
+              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+              variants={projectVariants}
+              transition={projectTransition}
+              whileHover={cardHover}
+            >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
@@ -81,41 +127,58 @@ export default function Projects() {
                 </div>
 
                 <div className="flex gap-3">
-                  <button className="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors">
+                  <motion.button 
+                    className="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
                     View Demo
-                  </button>
-                  <button className="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-50 transition-colors">
+                  </motion.button>
+                  <motion.button 
+                    className="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-50 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
                     View Code
-                  </button>
+                  </motion.button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Desktop: Alternating layout */}
-        <div className="hidden lg:block space-y-20">
+        <motion.div 
+          className="hidden lg:block space-y-20"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           {projects.map((project, index) => {
             const isEven = index % 2 === 0;
             return (
-              <div key={project.id} className={`flex items-center gap-12 ${isEven ? '' : 'flex-row-reverse'}`}>
+              <motion.div 
+                key={project.id} 
+                className={`flex items-center gap-12 ${isEven ? '' : 'flex-row-reverse'}`}
+                variants={projectVariants}
+                transition={projectTransition}
+              >
                 {/* Image */}
-                <div className="flex-1">
+                <motion.div 
+                  className="flex-1"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <div className="bg-gray-300 rounded-lg aspect-[4/3] flex items-center justify-center">
                     <span className="text-gray-500 font-medium">Project Screenshot</span>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Content */}
                 <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-4">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
-                      {project.category}
-                    </span>
-                    <span className="text-green-600 text-sm font-medium">
-                      ✓ {project.status}
-                    </span>
-                  </div>
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full mb-4 inline-block">
+                    {project.category}
+                  </span>
                   
                   <h3 className="text-3xl font-bold text-gray-900 mb-4">
                     {project.title}
@@ -137,18 +200,26 @@ export default function Projects() {
                   </div>
 
                   <div className="flex gap-4">
-                    <button className="bg-blue-600 text-white py-3 px-6 rounded hover:bg-blue-700 transition-colors">
+                    <motion.button
+                      className="bg-blue-600 text-white py-3 px-6 rounded hover:bg-blue-700 transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
                       View Demo
-                    </button>
-                    <button className="border border-gray-300 text-gray-700 py-3 px-6 rounded hover:bg-gray-50 transition-colors">
+                    </motion.button>
+                    <motion.button
+                      className="border border-gray-300 text-gray-700 py-3 px-6 rounded hover:bg-gray-50 transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
                       View Code
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
