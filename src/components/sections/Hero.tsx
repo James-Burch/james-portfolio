@@ -9,7 +9,7 @@ export default function Hero() {
           Full-Stack Developer & Data Enthusiast
         </h2>
         <p className="text-xl text-gray-600 mb-12">
-          13+ months of intensive learning. 8 projects built from scratch.
+          18+ months of intensive learning. 10+ projects built from scratch.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           
