@@ -12,8 +12,8 @@ export default function ProjectsPage() {
       category: "Machine Learning",
       status: "completed",
       image: "/api/placeholder/800/500",
-      demoUrl: "#",
-      githubUrl: "#",
+      demoUrl: "https://house-price-prediction-pp5-615997f77e23.herokuapp.com/",
+      githubUrl: "https://github.com/James-Burch/PP5-ML-PROJECT",
       featured: true
     },
     {
@@ -21,12 +21,12 @@ export default function ProjectsPage() {
       title: "Refine Barbers Booking Website",
       description: "Professional booking website for barber shop with appointment scheduling, user authentication, and responsive design. Built with React and modern web technologies.",
       longDescription: "Full-stack booking platform featuring real-time availability, user profiles, appointment management, and payment integration. Focused on user experience and mobile responsiveness.",
-      technologies: ["React", "JavaScript", "HTML", "CSS", "Supabase"],
+      technologies: ["React", "JavaScript", "HTML", "CSS", "Node.js"],
       category: "Full-Stack",
       status: "completed",
       image: "/api/placeholder/800/500",
-      demoUrl: "#",
-      githubUrl: "#",
+      demoUrl: "https://refinebarbers.netlify.app",
+      githubUrl: "https://github.com/James-Burch/Refine-Barbers",
       featured: true
     },
     {
@@ -34,12 +34,12 @@ export default function ProjectsPage() {
       title: "Noble Mortgages Website",
       description: "Professional mortgage broker website with modern design, responsive layout, and lead generation functionality. Built for real client with focus on conversion optimization.",
       longDescription: "Client project featuring mortgage calculator, application forms, service pages, and contact system. Optimized for SEO and lead generation with professional design.",
-      technologies: ["Typescript", "React", "Responsive Design"],
+      technologies: ["HTML", "CSS", "JavaScript", "Responsive Design"],
       category: "Client Work",
       status: "completed",
       image: "/api/placeholder/800/500",
-      demoUrl: "#",
-      githubUrl: "#",
+      demoUrl: "https://mortgageuk.netlify.app/",
+      githubUrl: "https://github.com/James-Burch/AK-Site",
       featured: true
     },
     {
@@ -51,8 +51,8 @@ export default function ProjectsPage() {
       category: "Full-Stack",
       status: "completed",
       image: "/api/placeholder/800/500",
-      demoUrl: "#",
-      githubUrl: "#",
+      demoUrl: "https://pp4-django-project-082841c8663e.herokuapp.com/",
+      githubUrl: "https://github.com/James-Burch/PP4-Django-Project",
       featured: false
     },
     {
@@ -64,8 +64,8 @@ export default function ProjectsPage() {
       category: "Demo",
       status: "completed",
       image: "/api/placeholder/800/500",
-      demoUrl: "#",
-      githubUrl: "#",
+      demoUrl: "https://demoforcdadbuild.netlify.app/",
+      githubUrl: "https://github.com/James-Burch/paul-cdad-build-website",
       featured: false
     },
     {
@@ -77,8 +77,8 @@ export default function ProjectsPage() {
       category: "Backend",
       status: "completed",
       image: "/api/placeholder/800/500",
-      demoUrl: "#",
-      githubUrl: "#",
+      demoUrl: "https://fitness-tracker-pp3-ac30d4f35dab.herokuapp.com/",
+      githubUrl: "https://github.com/James-Burch/Project-3",
       featured: false
     },
     {
@@ -90,8 +90,8 @@ export default function ProjectsPage() {
       category: "Frontend",
       status: "completed",
       image: "/api/placeholder/800/500",
-      demoUrl: "#",
-      githubUrl: "#",
+      demoUrl: "https://james-burch.github.io/Project2-CI/",
+      githubUrl: "https://github.com/James-Burch/Project2-CI",
       featured: false
     },
     {
@@ -103,8 +103,8 @@ export default function ProjectsPage() {
       category: "Portfolio",
       status: "completed",
       image: "/api/placeholder/800/500",
-      demoUrl: "#",
-      githubUrl: "#",
+      demoUrl: "https://jamesburch.co.uk/",
+      githubUrl: "https://github.com/James-Burch/Resume-J-Burch",
       featured: false
     }
   ];
@@ -137,11 +137,69 @@ export default function ProjectsPage() {
             Featured Projects
           </h2>
           
-          <div className="space-y-20">
+          {/* Mobile/Tablet: Card layout */}
+          <div className="lg:hidden grid md:grid-cols-2 gap-8 mb-16">
+            {featuredProjects.map((project) => (
+              <div key={project.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className={`px-3 py-1 text-sm font-medium rounded-full ${
+                      project.category === 'Machine Learning' ? 'bg-purple-100 text-purple-800' :
+                      project.category === 'Full-Stack' ? 'bg-blue-100 text-blue-800' :
+                      project.category === 'Client Work' ? 'bg-green-100 text-green-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {project.category}
+                    </span>
+                    <span className="text-green-600 text-sm font-medium">
+                      ✓ {project.status}
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    {project.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 mb-4">
+                    {project.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.map((tech) => (
+                      <span 
+                        key={tech}
+                        className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-3">
+                    <a
+                      href={project.demoUrl}
+                      className="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors text-center"
+                    >
+                      View Live Site
+                    </a>
+                    <a
+                      href={project.githubUrl}
+                      className="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-50 transition-colors text-center"
+                    >
+                      View Code
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: Staggered layout */}
+          <div className="hidden lg:block space-y-20">
             {featuredProjects.map((project, index) => {
               const isEven = index % 2 === 0;
               return (
-                <div key={project.id} className={`flex flex-col lg:flex-row items-center gap-12 ${isEven ? '' : 'lg:flex-row-reverse'}`}>
+                <div key={project.id} className={`flex items-center gap-12 ${isEven ? '' : 'flex-row-reverse'}`}>
                   {/* Image */}
                   <div className="flex-1">
                     <div className="bg-gray-300 rounded-lg aspect-[4/3] flex items-center justify-center">
@@ -164,7 +222,7 @@ export default function ProjectsPage() {
                       {project.title}
                     </h3>
                     
-                    <p className="text-gray-600 mb-4 leading-relaxed">
+                    <p className="text-lg text-gray-600 mb-4 leading-relaxed">
                       {project.description}
                     </p>
                     
@@ -188,7 +246,7 @@ export default function ProjectsPage() {
                         href={project.demoUrl}
                         className="bg-blue-600 text-white py-3 px-6 rounded hover:bg-blue-700 transition-colors"
                       >
-                        View Demo
+                        View Live Site
                       </a>
                       <a
                         href={project.githubUrl}
@@ -205,14 +263,15 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Other Projects Grid */}
+      {/* Additional Projects - Responsive Layout */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
             Additional Projects
           </h2>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Mobile/Tablet: Card layout */}
+          <div className="lg:hidden grid md:grid-cols-2 gap-8">
             {otherProjects.map((project) => (
               <div key={project.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                 <div className="p-6">
@@ -256,7 +315,7 @@ export default function ProjectsPage() {
                       href={project.demoUrl}
                       className="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors text-center"
                     >
-                      Demo
+                      Live Site
                     </a>
                     <a
                       href={project.githubUrl}
@@ -268,6 +327,75 @@ export default function ProjectsPage() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Desktop: Staggered layout */}
+          <div className="hidden lg:block space-y-20">
+            {otherProjects.map((project, index) => {
+              const isEven = index % 2 === 0;
+              return (
+                <div key={project.id} className={`flex items-center gap-12 ${isEven ? '' : 'flex-row-reverse'}`}>
+                  {/* Image */}
+                  <div className="flex-1">
+                    <div className="bg-gray-300 rounded-lg aspect-[4/3] flex items-center justify-center">
+                      <span className="text-gray-500 font-medium">Project Screenshot</span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <span className={`px-3 py-1 text-sm font-medium rounded-full mb-4 inline-block ${
+                      project.category === 'Backend' ? 'bg-red-100 text-red-800' :
+                      project.category === 'Frontend' ? 'bg-blue-100 text-blue-800' :
+                      project.category === 'Full-Stack' ? 'bg-green-100 text-green-800' :
+                      project.category === 'Demo' ? 'bg-orange-100 text-orange-800' :
+                      project.category === 'Portfolio' ? 'bg-purple-100 text-purple-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {project.category}
+                    </span>
+                    
+                    <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                      {project.title}
+                    </h3>
+                    
+                    <p className="text-lg text-gray-600 mb-4 leading-relaxed">
+                      {project.description}
+                    </p>
+                    
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      {project.longDescription}
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {project.technologies.map((tech) => (
+                        <span 
+                          key={tech}
+                          className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex gap-4">
+                      <a
+                        href={project.demoUrl}
+                        className="bg-blue-600 text-white py-3 px-6 rounded hover:bg-blue-700 transition-colors"
+                      >
+                        View Live Site
+                      </a>
+                      <a
+                        href={project.githubUrl}
+                        className="border border-gray-300 text-gray-700 py-3 px-6 rounded hover:bg-gray-50 transition-colors"
+                      >
+                        View Code
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
