@@ -79,25 +79,43 @@ export default function Skills() {
   };
 
   return (
-    <section id="skills" className="py-20 bg-white" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="skills"
+      className="premium-section bg-white relative overflow-hidden"
+      ref={ref}
+    >
+      {/* Subtle background pattern only */}
+      <div className="absolute inset-0 bg-grid-gray-900/[0.01] bg-[size:80px_80px]" />
+
+      <div className="premium-container relative z-10">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Technical Skills
+          <motion.p
+            className="text-blue-600 font-medium text-lg tracking-wide uppercase mb-4"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Technical Expertise
+          </motion.p>
+
+          <h2 className="text-section-title text-gray-900 mb-6">
+            Skills & Technologies
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             18+ months of intensive learning across full-stack development and
             data science
           </p>
         </motion.div>
 
+        {/* Clean skill cards */}
         <motion.div
-          className="grid md:grid-cols-2 gap-12"
+          className="grid md:grid-cols-2 gap-8 mb-20"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -105,39 +123,53 @@ export default function Skills() {
           {skillCategories.map((category, categoryIndex) => (
             <motion.div
               key={categoryIndex}
-              className="space-y-6"
+              className="bg-white border border-gray-100 rounded-2xl p-8 shadow-lg shadow-gray-900/5 hover:shadow-xl hover:shadow-gray-900/10 hover:border-blue-200 transition-all duration-500"
               variants={categoryVariants}
               transition={{ duration: 0.6 }}
+              whileHover={{ y: -5 }}
             >
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
+              <h3 className="text-2xl font-bold text-gray-900 mb-8 pb-4 border-b border-gray-100">
                 {category.title}
               </h3>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {category.skills.map((skill, skillIndex) => (
                   <motion.div
                     key={skillIndex}
-                    className="space-y-2"
+                    className="space-y-3"
                     variants={skillVariants}
                     transition={{ duration: 0.4, delay: skillIndex * 0.1 }}
                   >
                     <div className="flex justify-between items-center">
-                      <span className="font-medium text-gray-900">
+                      <span className="font-semibold text-gray-900 text-lg">
                         {skill.name}
                       </span>
-                      <span className="text-sm text-gray-600">
+                      <span className="text-blue-600 font-bold text-lg">
                         {skill.level}%
                       </span>
                     </div>
 
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <motion.div
-                        className="bg-blue-600 h-2 rounded-full"
-                        variants={progressVariants}
-                        initial="hidden"
-                        animate={isInView ? "visible" : "hidden"}
-                        custom={skill.level}
-                      />
+                    <div className="relative">
+                      <div className="w-full bg-gray-200/70 rounded-full h-3 shadow-inner">
+                        <motion.div
+                          className="h-3 rounded-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 shadow-lg shadow-blue-600/25 relative overflow-hidden"
+                          variants={progressVariants}
+                          initial="hidden"
+                          animate={isInView ? "visible" : "hidden"}
+                          custom={skill.level}
+                        >
+                          {/* Animated shine effect */}
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                            animate={{ x: ["-100%", "100%"] }}
+                            transition={{
+                              duration: 2,
+                              delay: skillIndex * 0.2 + 0.8,
+                              ease: "easeInOut",
+                            }}
+                          />
+                        </motion.div>
+                      </div>
                     </div>
                   </motion.div>
                 ))}
@@ -146,45 +178,56 @@ export default function Skills() {
           ))}
         </motion.div>
 
-        {/* Summary Stats */}
+        {/* Enhanced Summary Stats */}
         <motion.div
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <motion.div
-            className="space-y-2"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="text-3xl font-bold text-blue-600">18+</div>
-            <div className="text-gray-600">Months Learning</div>
-          </motion.div>
-          <motion.div
-            className="space-y-2"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="text-3xl font-bold text-blue-600">8</div>
-            <div className="text-gray-600">Projects Built</div>
-          </motion.div>
-          <motion.div
-            className="space-y-2"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="text-3xl font-bold text-blue-600">20+</div>
-            <div className="text-gray-600">Technologies</div>
-          </motion.div>
-          <motion.div
-            className="space-y-2"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="text-3xl font-bold text-blue-600">100%</div>
-            <div className="text-gray-600">Commitment</div>
-          </motion.div>
+          {[
+            {
+              number: "18+",
+              label: "Months Learning",
+              color: "from-blue-600 to-blue-700",
+            },
+            {
+              number: "8",
+              label: "Projects Built",
+              color: "from-purple-600 to-purple-700",
+            },
+            {
+              number: "20+",
+              label: "Technologies",
+              color: "from-green-600 to-green-700",
+            },
+            {
+              number: "100%",
+              label: "Commitment",
+              color: "from-orange-600 to-orange-700",
+            },
+          ].map((stat, index) => (
+            <motion.div
+              key={index}
+              className="premium-card rounded-2xl p-8 group hover:shadow-2xl hover:shadow-gray-900/10 transition-all duration-500"
+              whileHover={{ scale: 1.05, y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div
+                className={`text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}
+                initial={{ scale: 0 }}
+                animate={isInView ? { scale: 1 } : { scale: 0 }}
+                transition={{
+                  delay: index * 0.1 + 0.8,
+                  duration: 0.5,
+                  type: "spring",
+                }}
+              >
+                {stat.number}
+              </motion.div>
+              <div className="text-gray-600 font-medium">{stat.label}</div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>
