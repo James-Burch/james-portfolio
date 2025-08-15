@@ -51,8 +51,8 @@ export default function ProjectsPage() {
       category: "Client Work",
       status: "completed",
       image: "/images/noblemortgages.webp",
-      demoUrl: "https://mortgageuk.netlify.app/",
-      githubUrl: "https://github.com/James-Burch/AK-Site",
+      demoUrl: "https://noblemortgages.co.uk/",
+      githubUrl: "https://github.com/James-Burch/noble-mortgages",
       featured: true,
     },
     {
