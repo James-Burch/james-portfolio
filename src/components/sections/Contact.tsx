@@ -119,8 +119,8 @@ export default function Contact() {
               <h4 className="font-medium text-gray-900 mb-3">Interested In</h4>
               <div className="flex flex-wrap gap-2">
                 <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">Junior Developer Roles</span>
-                <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">Data Analyst Positions</span>
-                <span className="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">DevOps Opportunities</span>
+                <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">Frontend Developer Roles</span>
+                <span className="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">AWS Cloud Engineer</span>
                 <span className="px-3 py-1 bg-orange-100 text-orange-800 text-sm rounded-full">Freelance Projects</span>
               </div>
             </div>

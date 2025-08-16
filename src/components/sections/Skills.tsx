@@ -11,6 +11,7 @@ export default function Skills() {
   const skillCategories = [
     {
       title: "Frontend Development",
+      color: "blue",
       skills: [
         { name: "React", level: 85, category: "framework" },
         { name: "JavaScript", level: 80, category: "language" },
@@ -21,6 +22,7 @@ export default function Skills() {
     },
     {
       title: "Backend & Data",
+      color: "purple",
       skills: [
         { name: "Python", level: 70, category: "language" },
         { name: "Django", level: 75, category: "framework" },
@@ -31,6 +33,7 @@ export default function Skills() {
     },
     {
       title: "Data Science & ML",
+      color: "green",
       skills: [
         { name: "NumPy", level: 80, category: "library" },
         { name: "Pandas", level: 85, category: "library" },
@@ -41,6 +44,7 @@ export default function Skills() {
     },
     {
       title: "Tools & DevOps",
+      color: "orange",
       skills: [
         { name: "Git", level: 85, category: "vcs" },
         { name: "VS Code", level: 90, category: "editor" },
@@ -72,10 +76,38 @@ export default function Skills() {
 
   const progressVariants = {
     hidden: { width: 0 },
-    visible: (level: number) => ({
-      width: `${level}%`,
-      transition: { duration: 1.2, delay: 0.3 },
-    }),
+    visible: { width: "var(--target-width)" },
+  };
+
+  const progressTransition = {
+    duration: 1.2,
+    delay: 0.3,
+  };
+
+  const getColorClasses = (color: string, type: "bg" | "text" | "border") => {
+    const colors = {
+      blue: {
+        bg: "bg-blue-600",
+        text: "text-blue-600",
+        border: "border-blue-600",
+      },
+      purple: {
+        bg: "bg-purple-600",
+        text: "text-purple-600",
+        border: "border-purple-600",
+      },
+      green: {
+        bg: "bg-green-600",
+        text: "text-green-600",
+        border: "border-green-600",
+      },
+      orange: {
+        bg: "bg-orange-600",
+        text: "text-orange-600",
+        border: "border-orange-600",
+      },
+    };
+    return colors[color as keyof typeof colors]?.[type] || colors.blue[type];
   };
 
   return (
@@ -84,10 +116,10 @@ export default function Skills() {
       className="premium-section bg-white relative overflow-hidden"
       ref={ref}
     >
-      {/* Subtle background pattern only */}
+      {/* Minimal background pattern */}
       <div className="absolute inset-0 bg-grid-gray-900/[0.01] bg-[size:80px_80px]" />
 
-      <div className="premium-container relative z-10">
+      <div className="premium-container relative z-10 px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
@@ -113,7 +145,7 @@ export default function Skills() {
           </p>
         </motion.div>
 
-        {/* Clean skill cards */}
+        {/* Premium skill cards */}
         <motion.div
           className="grid md:grid-cols-2 gap-8 mb-20"
           variants={containerVariants}
@@ -123,14 +155,23 @@ export default function Skills() {
           {skillCategories.map((category, categoryIndex) => (
             <motion.div
               key={categoryIndex}
-              className="bg-white border border-gray-100 rounded-2xl p-8 shadow-lg shadow-gray-900/5 hover:shadow-xl hover:shadow-gray-900/10 hover:border-blue-200 transition-all duration-500"
+              className="group bg-white border border-gray-100 rounded-2xl p-8 shadow-lg shadow-gray-900/5 hover:shadow-xl hover:shadow-gray-900/10 transition-all duration-500"
               variants={categoryVariants}
               transition={{ duration: 0.6 }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -5, scale: 1.02 }}
             >
-              <h3 className="text-2xl font-bold text-gray-900 mb-8 pb-4 border-b border-gray-100">
-                {category.title}
-              </h3>
+              {/* Category header */}
+              <div className="flex items-center gap-4 mb-8 pb-6 border-b border-gray-100">
+                <div
+                  className={`w-3 h-3 ${getColorClasses(
+                    category.color,
+                    "bg"
+                  )} rounded-full`}
+                />
+                <h3 className="text-2xl font-bold text-gray-900">
+                  {category.title}
+                </h3>
+              </div>
 
               <div className="space-y-6">
                 {category.skills.map((skill, skillIndex) => (
@@ -144,7 +185,12 @@ export default function Skills() {
                       <span className="font-semibold text-gray-900 text-lg">
                         {skill.name}
                       </span>
-                      <span className="text-blue-600 font-bold text-lg">
+                      <span
+                        className={`font-bold text-lg ${getColorClasses(
+                          category.color,
+                          "text"
+                        )}`}
+                      >
                         {skill.level}%
                       </span>
                     </div>
@@ -152,11 +198,28 @@ export default function Skills() {
                     <div className="relative">
                       <div className="w-full bg-gray-200/70 rounded-full h-3 shadow-inner">
                         <motion.div
-                          className="h-3 rounded-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 shadow-lg shadow-blue-600/25 relative overflow-hidden"
+                          className={`h-3 rounded-full ${getColorClasses(
+                            category.color,
+                            "bg"
+                          )} shadow-lg relative overflow-hidden`}
+                          style={
+                            {
+                              boxShadow: `0 4px 12px ${
+                                category.color === "blue"
+                                  ? "rgba(59, 130, 246, 0.25)"
+                                  : category.color === "purple"
+                                  ? "rgba(147, 51, 234, 0.25)"
+                                  : category.color === "green"
+                                  ? "rgba(34, 197, 94, 0.25)"
+                                  : "rgba(249, 115, 22, 0.25)"
+                              }`,
+                              "--target-width": `${skill.level}%`,
+                            } as any
+                          }
                           variants={progressVariants}
                           initial="hidden"
                           animate={isInView ? "visible" : "hidden"}
-                          custom={skill.level}
+                          transition={progressTransition}
                         >
                           {/* Animated shine effect */}
                           <motion.div
@@ -178,43 +241,30 @@ export default function Skills() {
           ))}
         </motion.div>
 
-        {/* Enhanced Summary Stats */}
+        {/* Enhanced Summary Stats - Consistent with Projects */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           {[
-            {
-              number: "18+",
-              label: "Months Learning",
-              color: "from-blue-600 to-blue-700",
-            },
-            {
-              number: "8",
-              label: "Projects Built",
-              color: "from-purple-600 to-purple-700",
-            },
-            {
-              number: "20+",
-              label: "Technologies",
-              color: "from-green-600 to-green-700",
-            },
-            {
-              number: "100%",
-              label: "Commitment",
-              color: "from-orange-600 to-orange-700",
-            },
+            { number: "18+", label: "Months Learning", color: "blue" },
+            { number: "8", label: "Projects Built", color: "purple" },
+            { number: "20+", label: "Technologies", color: "green" },
+            { number: "100%", label: "Commitment", color: "orange" },
           ].map((stat, index) => (
             <motion.div
               key={index}
-              className="premium-card rounded-2xl p-8 group hover:shadow-2xl hover:shadow-gray-900/10 transition-all duration-500"
+              className="group bg-white border border-gray-100 rounded-2xl p-6 lg:p-8 shadow-lg shadow-gray-900/5 hover:shadow-xl hover:shadow-gray-900/10 transition-all duration-500"
               whileHover={{ scale: 1.05, y: -5 }}
               transition={{ duration: 0.3 }}
             >
               <motion.div
-                className={`text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}
+                className={`text-3xl lg:text-4xl font-bold ${getColorClasses(
+                  stat.color,
+                  "text"
+                )} mb-2`}
                 initial={{ scale: 0 }}
                 animate={isInView ? { scale: 1 } : { scale: 0 }}
                 transition={{
@@ -225,7 +275,9 @@ export default function Skills() {
               >
                 {stat.number}
               </motion.div>
-              <div className="text-gray-600 font-medium">{stat.label}</div>
+              <div className="text-gray-600 font-medium text-sm lg:text-base">
+                {stat.label}
+              </div>
             </motion.div>
           ))}
         </motion.div>
