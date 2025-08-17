@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,12 +58,12 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: "https://jamesburch.co.uk",
     siteName: "James Burch - Developer Portfolio",
-    title: "James Burch | Full-Stack Developer",
+    title: "James Burch | Full-Stack Developer & Data Scientist",
     description:
-      "Experienced full-stack developer and tech enthusiast with 18+ months intensive training. Specializing in React, Python, machine learning, and cloud technologies.",
+      "Experienced full-stack developer and data scientist with 18+ months intensive training. Specializing in React, Python, machine learning, and cloud technologies.",
     images: [
       {
-        url: "/images/og-image.jpg", // Create this image with dimensions 1200x630
+        url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "James Burch - Full-Stack Developer Portfolio",
@@ -71,16 +72,16 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "James Burch | Full-Stack Developer",
+    title: "James Burch | Full-Stack Developer & Data Scientist",
     description:
-      "Experienced full-stack developer and tech enthusiast. Ready to contribute from day one.",
-    images: ["/images/og-image.jpg"], // Same image as OG
+      "Experienced full-stack developer and data scientist. Ready to contribute from day one.",
+    images: ["/images/og-image.jpg"],
   },
   alternates: {
     canonical: "https://jamesburch.co.uk",
   },
   verification: {
-    google: "your-google-verification-code", // From Google Search Console
+    google: "your-google-search-console-verification-code",
   },
   category: "technology",
   other: {
@@ -104,6 +105,24 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <head>
+        {/* Google Analytics */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+              page_title: document.title,
+              page_location: window.location.href,
+              send_page_view: true
+            });
+          `}
+        </Script>
+
         {/* Schema.org structured data */}
         <script
           type="application/ld+json"
@@ -176,6 +195,8 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
 
         {/* DNS prefetch for EmailJS */}
         <link rel="dns-prefetch" href="//api.emailjs.com" />

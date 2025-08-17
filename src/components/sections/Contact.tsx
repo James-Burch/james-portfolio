@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
+import { trackPortfolioEvents } from "../../lib/analytics";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ export default function Contact() {
     "idle" | "success" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [hasStartedForm, setHasStartedForm] = useState(false);
 
   const projectTypes = [
     "Job Opportunity",
@@ -24,11 +26,22 @@ export default function Contact() {
     "General Inquiry",
   ];
 
+  // Track section view when component mounts
+  useEffect(() => {
+    trackPortfolioEvents.viewSection('contact');
+  }, []);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
+    // Track when user first interacts with form
+    if (!hasStartedForm) {
+      trackPortfolioEvents.startContactForm();
+      setHasStartedForm(true);
+    }
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -42,7 +55,6 @@ export default function Contact() {
     setErrorMessage("");
 
     try {
-      // Create template parameters that match EmailJS template
       const templateParams = {
         from_name: formData.name,
         reply_to: formData.email,
@@ -57,7 +69,6 @@ export default function Contact() {
           hour: "2-digit",
           minute: "2-digit",
         }),
-        // Add conditional flag for job opportunities
         if_job_opportunity: formData.projectType === "Job Opportunity",
       };
 
@@ -69,6 +80,9 @@ export default function Contact() {
       );
 
       if (result.status === 200) {
+        // Track successful form submission
+        trackPortfolioEvents.submitContactForm(formData.projectType);
+        
         setSubmitStatus("success");
         setFormData({
           name: "",
@@ -77,8 +91,8 @@ export default function Contact() {
           projectType: "",
           message: "",
         });
+        setHasStartedForm(false);
 
-        // Reset success message after 5 seconds
         setTimeout(() => setSubmitStatus("idle"), 5000);
       }
     } catch (error: any) {
@@ -90,7 +104,6 @@ export default function Contact() {
           "Failed to send message. Please try again or contact me directly."
       );
 
-      // Reset error message after 8 seconds
       setTimeout(() => {
         setSubmitStatus("idle");
         setErrorMessage("");
@@ -98,6 +111,16 @@ export default function Contact() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Track email clicks
+  const handleEmailClick = () => {
+    trackPortfolioEvents.clickEmail();
+  };
+
+  // Track LinkedIn clicks
+  const handleLinkedInClick = () => {
+    trackPortfolioEvents.clickLinkedIn();
   };
 
   return (
@@ -136,6 +159,7 @@ export default function Contact() {
                   <p className="font-medium text-gray-900">Email</p>
                   <a
                     href="mailto:james@jamesburch.co.uk"
+                    onClick={handleEmailClick}
                     className="text-blue-600 hover:text-blue-700 transition-colors"
                   >
                     james@jamesburch.co.uk
@@ -153,6 +177,7 @@ export default function Contact() {
                     href="https://linkedin.com/in/james-burch123"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={handleLinkedInClick}
                     className="text-blue-600 hover:text-blue-700 transition-colors"
                   >
                     linkedin.com/in/james-burch123
@@ -399,6 +424,7 @@ export default function Contact() {
                     Please try again or contact me directly at{" "}
                     <a
                       href="mailto:james@jamesburch.co.uk"
+                      onClick={handleEmailClick}
                       className="underline hover:no-underline"
                     >
                       james@jamesburch.co.uk
