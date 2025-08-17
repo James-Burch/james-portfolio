@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import Image from "next/image";
 
 export default function Projects() {
   const ref = useRef(null);
@@ -136,7 +137,7 @@ export default function Projects() {
                 onHoverStart={() => setHoveredProject(project.id)}
                 onHoverEnd={() => setHoveredProject(null)}
               >
-                {/* Enhanced Image Section - Clickable */}
+                {/* Enhanced Image Section - Clickable with Optimized Images */}
                 <motion.div
                   className="flex-1 relative w-full"
                   whileHover={{ scale: 1.02 }}
@@ -156,7 +157,7 @@ export default function Projects() {
                       transition={{ duration: 0.3 }}
                     />
 
-                    {/* Clickable image container */}
+                    {/* Clickable image container with optimized Next.js Image */}
                     <motion.a
                       href={project.demoUrl}
                       target="_blank"
@@ -165,11 +166,16 @@ export default function Projects() {
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
                     >
-                      <img
-                        src={project.image}
-                        alt={`${project.title} screenshot`}
-                        className="w-full aspect-[4/3] object-cover object-top transition-all duration-500 group-hover:scale-105"
-                      />
+                      <div className="relative aspect-[4/3]">
+                        <Image
+                          src={project.image}
+                          alt={`${project.title} screenshot`}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover object-top transition-all duration-500 group-hover:scale-105"
+                          priority={index === 0} // Priority load for first project
+                        />
+                      </div>
 
                       {/* Click indicator overlay */}
                       <div className="absolute inset-0 bg-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
