@@ -124,7 +124,7 @@ export default function About() {
                 <strong className="text-gray-900">
                   learning new technologies quickly
                 </strong>
-                and applying them to solve real-world problems. From building
+                {" "}and applying them to solve real-world problems. From building
                 machine learning models that predict house prices to creating
                 full-stack applications for real clients, I've consistently
                 pushed myself to grow.
