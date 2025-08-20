@@ -75,7 +75,7 @@ export default function ProjectsPage() {
       technologies: ["HTML", "CSS", "JavaScript", "Responsive Design"],
       category: "Client Work",
       status: "completed",
-      image: "/images/noblemortgages.webp",
+      image: "images/noblemortgagesimage.webp",
       demoUrl: "https://noblemortgages.co.uk/",
       githubUrl: "https://github.com/James-Burch/noble-mortgages",
       color: "green",

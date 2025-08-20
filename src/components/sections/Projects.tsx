@@ -522,7 +522,6 @@
 //   );
 // }
 
-// Updated Projects.tsx - Integrated with modal system
 "use client";
 
 import { motion } from "framer-motion";

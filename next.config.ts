@@ -1,95 +1,115 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Enable production optimizations
-  experimental: {
-    optimizeCss: true,
-    optimizePackageImports: ['framer-motion', 'lucide-react', '@emailjs/browser'],
-  },
-  
-  // Image optimization - Critical for Lighthouse performance score
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  // Performance optimizations
+  swcMinify: true,
+
+  // Image optimization
   images: {
-    formats: ['image/webp', 'image/avif'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    formats: ["image/webp", "image/avif"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    minimumCacheTTL: 31536000, // 1 year
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  
-  // Performance headers for better caching and security
+
+  // Compression
+  compress: true,
+
+  // Build optimization
+  experimental: {
+    optimizePackageImports: ["framer-motion", "lucide-react"],
+  },
+
+  // Headers for performance and security
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
+          // Security headers
           {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY'
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
+            key: "Referrer-Policy",
+            value: "origin-when-cross-origin",
           },
+          // Performance headers
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
-          }
-        ],
-      },
-      {
-        // Cache static assets for better performance
-        source: '/images/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
           },
         ],
       },
       {
-        // Cache fonts
-        source: '/fonts/(.*)',
+        // Cache static assets for 1 year
+        source: "/images/(.*)",
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Cache fonts for 1 year
+        source: "/fonts/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
     ];
   },
-  
-  // Compress responses for better performance
-  compress: true,
-  
-  // Bundle analyzer (development only)
-  ...(process.env.ANALYZE === 'true' && {
-    webpack: (config: any, { isServer }: { isServer: boolean }) => {
-      if (!isServer) {
-        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: 'static',
-            openAnalyzer: false,
-            reportFilename: '../analyze/client.html'
-          })
-        );
-      }
-      return config;
-    },
-  }),
-  
-  // Optimize compilation
-  swcMinify: true,
-  
-  // Remove console logs in production
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+
+  // Bundle analyzer for production builds (optional)
+  webpack: (config, { dev, isServer }) => {
+    // Optimize bundle size
+    if (!dev && !isServer) {
+      config.optimization.splitChunks.cacheGroups = {
+        ...config.optimization.splitChunks.cacheGroups,
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+          priority: 10,
+        },
+        framerMotion: {
+          test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+          name: "framer-motion",
+          chunks: "all",
+          priority: 20,
+        },
+      };
+    }
+    return config;
+  },
+
+  // Redirect www to non-www (for SEO)
+  async redirects() {
+    return [
+      {
+        source: "/(.*)",
+        has: [
+          {
+            type: "host",
+            value: "www.jamesburch.co.uk",
+          },
+        ],
+        destination: "https://jamesburch.co.uk/$1",
+        permanent: true,
+      },
+    ];
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
