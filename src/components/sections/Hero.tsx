@@ -151,9 +151,9 @@ export default function Hero() {
             </span>
           </span>
           <span className="block text-4xl lg:text-6xl font-normal text-gray-800 mt-2">
-            Full-Stack Developer &{" "}
+            Junior Software Developer <br />
             <span className="bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent font-bold">
-              Data Scientist
+               Currently Learning AWS Cloud Technologies
             </span>
           </span>
         </motion.h1>
