@@ -833,12 +833,12 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Clean, Simple Background - No Gradients */}
+      {/* Clean, Simple Background */}
       <div className="fixed inset-0 -z-10">
         {/* Solid light background */}
         <div className="absolute inset-0 bg-gray-50" />
 
-        {/* Minimal decorative elements - positioned away from text */}
+        {/* Minimal decorative elements */}
         <motion.div
           className="absolute top-10 right-10 w-32 h-32 rounded-full bg-blue-100 opacity-30 blur-2xl"
           animate={{
@@ -879,7 +879,7 @@ export default function ProjectsPage() {
             }
             transition={{ duration: 0.8 }}
           >
-            {/* Status indicator with perfect contrast */}
+            {/* Status indicator */}
             <motion.div
               className="inline-flex items-center gap-3 mb-8 px-6 py-3 bg-green-50 border border-green-200 rounded-full shadow-sm"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -924,7 +924,7 @@ export default function ProjectsPage() {
               real-world client solutions.
             </motion.p>
 
-            {/* Project stats with dark text */}
+            {/* Project stats */}
             <motion.div
               className="flex justify-center gap-8 mt-12"
               initial={{ opacity: 0, y: 20 }}
@@ -937,8 +937,8 @@ export default function ProjectsPage() {
                 { label: "Featured Projects", value: "3" },
                 { label: "Technologies", value: "15+" },
                 { label: "Live Demos", value: "8" },
-              ].map((stat, index) => (
-                <div key={index} className="text-center">
+              ].map((stat, statIndex) => (
+                <div key={statIndex} className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
                     {stat.value}
                   </div>
@@ -1156,7 +1156,7 @@ export default function ProjectsPage() {
             initial="hidden"
             animate={isAdditionalInView ? "visible" : "hidden"}
           >
-            {additionalProjects.map((project, index) => {
+            {additionalProjects.map((project, projectIndex) => {
               const colorClasses = getColorClasses(project.category);
 
               return (
@@ -1273,8 +1273,8 @@ export default function ProjectsPage() {
                 Ready to Build Something Amazing?
               </h3>
               <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Let's discuss your next project and explore how we can bring
-                your ideas to life.
+                Let&apos;s discuss your next project and explore how we can
+                bring your ideas to life.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1285,7 +1285,7 @@ export default function ProjectsPage() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <span className="flex items-center justify-center gap-2">
-                    Let's Connect
+                    Let&apos;s Connect
                     <motion.div
                       className="w-2 h-2 bg-white rounded-full"
                       animate={{ scale: [1, 1.2, 1] }}
