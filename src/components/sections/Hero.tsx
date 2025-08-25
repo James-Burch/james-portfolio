@@ -14,11 +14,14 @@ export default function Hero() {
   const yBg = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
-  // Throttled mouse tracking for performance
+  // Throttled mouse tracking for performance - mobile optimized
   useEffect(() => {
     let ticking = false;
+    const isMobile = window.innerWidth < 768;
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (!ticking) {
+      // Reduce mouse tracking frequency on mobile
+      if (!ticking && !isMobile) {
         requestAnimationFrame(() => {
           setMousePosition({
             x: (e.clientX / window.innerWidth) * 100,
@@ -30,8 +33,16 @@ export default function Hero() {
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    // Only add mouse tracking on desktop
+    if (!isMobile) {
+      window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    }
+
+    return () => {
+      if (!isMobile) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
+    };
   }, []);
 
   // Memoized stats data to prevent recreating array
@@ -76,14 +87,14 @@ export default function Hero() {
       {/* Lighter grid background */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.02)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,black_40%,transparent_110%)]" />
 
-      {/* Optimized floating shapes */}
+      {/* Mobile-optimized floating shapes - reduced on mobile */}
       <motion.div
-        className="absolute top-20 left-20 w-32 h-32 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-xl"
+        className="absolute top-20 left-20 w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-xl"
         animate={{ y: [-10, 10, -10] }}
         transition={{ duration: 4, repeat: Infinity, repeatType: "loop" }}
       />
       <motion.div
-        className="absolute bottom-20 right-20 w-48 h-48 rounded-full bg-gradient-to-br from-green-400/20 to-blue-400/20 blur-xl"
+        className="absolute bottom-20 right-20 w-32 h-32 lg:w-48 lg:h-48 rounded-full bg-gradient-to-br from-green-400/20 to-blue-400/20 blur-xl"
         animate={{ y: [-10, 10, -10] }}
         transition={{
           duration: 4,
@@ -93,7 +104,7 @@ export default function Hero() {
         }}
       />
       <motion.div
-        className="absolute top-1/2 left-10 w-24 h-24 rounded-full bg-gradient-to-br from-purple-400/20 to-pink-400/20 blur-xl"
+        className="absolute top-1/2 left-10 w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-purple-400/20 to-pink-400/20 blur-xl"
         animate={{ y: [-10, 10, -10] }}
         transition={{
           duration: 4,
@@ -246,9 +257,9 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Code snippet floating element */}
+      {/* Code snippet floating element - hidden on mobile for performance */}
       <motion.div
-        className="absolute top-20 right-10 hidden lg:block"
+        className="absolute top-20 right-10 hidden xl:block"
         animate={{ y: [-5, 5, -5], rotate: [0, 1, 0] }}
         transition={{ duration: 6, repeat: Infinity }}
       >
