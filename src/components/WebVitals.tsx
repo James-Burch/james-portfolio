@@ -4,25 +4,48 @@ import { useReportWebVitals } from "next/web-vitals";
 
 export function WebVitals() {
   useReportWebVitals((metric) => {
-    // Log to console in development
+    // Only log in development mode, and only significant metrics
     if (process.env.NODE_ENV === "development") {
-      console.log("Web Vital:", metric.name, metric.value, metric.rating);
+      // Only log poor performance to avoid console noise
+      const thresholds = {
+        CLS: { poor: 0.25 },
+        FCP: { poor: 3000 },
+        FID: { poor: 300 },
+        LCP: { poor: 4000 },
+        TTFB: { poor: 1800 },
+        INP: { poor: 500 },
+      };
+
+      const threshold = thresholds[metric.name as keyof typeof thresholds];
+      if (threshold && metric.value > threshold.poor) {
+        console.warn(
+          `⚠️ Poor ${metric.name}: ${Math.round(metric.value)} (threshold: ${
+            threshold.poor
+          })`
+        );
+      } else if (metric.rating === "good") {
+        console.log(`✅ Good ${metric.name}: ${Math.round(metric.value)}`);
+      }
     }
 
-    // Send to analytics in production
+    // Send to analytics in production only
     if (process.env.NODE_ENV === "production") {
-      // Example: Send to Google Analytics
-      if (typeof window !== "undefined" && window.gtag) {
-        window.gtag("event", metric.name, {
-          custom_parameter_1: metric.value,
-          custom_parameter_2: metric.rating,
-          custom_parameter_3: metric.id,
+      // Example: Send to Google Analytics (only if gtag exists)
+      if (typeof window !== "undefined" && "gtag" in window) {
+        (window as any).gtag("event", metric.name, {
+          value: Math.round(
+            metric.name === "CLS" ? metric.value * 1000 : metric.value
+          ),
+          metric_id: metric.id,
+          metric_rating: metric.rating,
+          custom_map: {
+            metric_name: metric.name,
+          },
         });
       }
 
-      // Example: Send to other analytics services
+      // Send to your analytics endpoint (optional)
       if (typeof window !== "undefined") {
-        // Send to your preferred analytics service
         fetch("/api/web-vitals", {
           method: "POST",
           headers: {
@@ -30,37 +53,15 @@ export function WebVitals() {
           },
           body: JSON.stringify({
             name: metric.name,
-            value: metric.value,
+            value: Math.round(metric.value),
             rating: metric.rating,
             id: metric.id,
-            navigationType: metric.navigationType,
-            entries: metric.entries,
             url: window.location.href,
             timestamp: Date.now(),
           }),
-        }).catch((error) => {
-          console.error("Failed to send web vital:", error);
+        }).catch(() => {
+          // Silently fail to avoid console errors
         });
-      }
-    }
-
-    // Performance monitoring thresholds
-    const thresholds = {
-      CLS: { good: 0.1, poor: 0.25 },
-      FCP: { good: 1800, poor: 3000 },
-      FID: { good: 100, poor: 300 },
-      LCP: { good: 2500, poor: 4000 },
-      TTFB: { good: 800, poor: 1800 },
-      INP: { good: 200, poor: 500 },
-    };
-
-    // Alert for poor performance in development
-    if (process.env.NODE_ENV === "development") {
-      const threshold = thresholds[metric.name as keyof typeof thresholds];
-      if (threshold && metric.value > threshold.poor) {
-        console.warn(
-          `⚠️ Poor ${metric.name}: ${metric.value} (threshold: ${threshold.poor})`
-        );
       }
     }
   });
@@ -68,52 +69,30 @@ export function WebVitals() {
   return null;
 }
 
-// Performance monitoring utility
+// Optional: Performance monitoring for development
 export function performanceMonitor() {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || process.env.NODE_ENV !== "development") {
+    return;
+  }
 
-  // Monitor long tasks
+  // Monitor long tasks (only in development)
   if ("PerformanceObserver" in window) {
     try {
       const longTaskObserver = new PerformanceObserver((list) => {
         list.getEntries().forEach((entry) => {
           if (entry.duration > 50) {
-            console.warn(`Long task detected: ${entry.duration}ms`);
+            console.warn(`Long task detected: ${Math.round(entry.duration)}ms`);
           }
         });
       });
       longTaskObserver.observe({ entryTypes: ["longtask"] });
-
-      // Monitor layout shifts
-      const clsObserver = new PerformanceObserver((list) => {
-        let cumulativeScore = 0;
-        list.getEntries().forEach((entry) => {
-          if (!(entry as any).hadRecentInput) {
-            cumulativeScore += (entry as any).value;
-          }
-        });
-        if (cumulativeScore > 0.1) {
-          console.warn(`Cumulative Layout Shift: ${cumulativeScore}`);
-        }
-      });
-      clsObserver.observe({ entryTypes: ["layout-shift"] });
     } catch (error) {
-      console.error("Performance observer setup failed:", error);
+      // Silently fail if observer not supported
     }
-  }
-
-  // Monitor memory usage (Chrome only)
-  if ("memory" in performance) {
-    setInterval(() => {
-      const memory = (performance as any).memory;
-      if (memory.usedJSHeapSize / memory.jsHeapSizeLimit > 0.9) {
-        console.warn("High memory usage detected");
-      }
-    }, 30000); // Check every 30 seconds
   }
 }
 
-// Call this in your main app component
+// Initialize performance monitoring (call once in your app)
 export function initPerformanceMonitoring() {
   if (typeof window !== "undefined") {
     performanceMonitor();

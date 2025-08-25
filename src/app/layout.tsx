@@ -101,14 +101,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
-        {/* Preload critical resources */}
-        <link
-          rel="preload"
-          href="/images/hero-bg.jpg"
-          as="image"
-          type="image/jpeg"
-        />
-
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//api.emailjs.com" />
@@ -137,6 +129,7 @@ export default function RootLayout({
         <div
           id="loading-indicator"
           className="fixed inset-0 bg-white z-50 flex items-center justify-center"
+          style={{ display: "none" }} // Start hidden to avoid flash
         >
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
@@ -152,9 +145,16 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              window.addEventListener('load', function() {
-                document.getElementById('loading-indicator').style.display = 'none';
-              });
+              // Remove loading indicator when page is ready
+              if (document.readyState === 'complete') {
+                const indicator = document.getElementById('loading-indicator');
+                if (indicator) indicator.style.display = 'none';
+              } else {
+                window.addEventListener('load', function() {
+                  const indicator = document.getElementById('loading-indicator');
+                  if (indicator) indicator.style.display = 'none';
+                });
+              }
             `,
           }}
         />
