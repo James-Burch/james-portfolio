@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { WebVitals } from "@/components/WebVitals";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Optimized font loading with display:swap and preload
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap", // Critical for CLS
+  preload: true,
+  variable: "--font-inter",
+  // Only load the weights you actually use
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -78,23 +78,18 @@ export const metadata: Metadata = {
       "Experienced full-stack developer and data scientist. Ready to contribute from day one.",
     images: ["/images/og-image.jpg"],
   },
-  alternates: {
-    canonical: "https://jamesburch.co.uk",
-  },
+  // Performance and indexing optimizations
   verification: {
-    google: "your-google-search-console-verification-code",
+    // Add your verification IDs when available
+    // google: "your-google-verification-id",
+    // other: "your-other-verification-id",
   },
   category: "technology",
-  other: {
-    "application-name": "James Burch Portfolio",
-    "apple-mobile-web-app-title": "James Burch",
-    "apple-mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-status-bar-style": "default",
-    "format-detection": "telephone=no",
-    "mobile-web-app-capable": "yes",
-    "msapplication-TileColor": "#0070f3",
-    "msapplication-config": "/browserconfig.xml",
-    "theme-color": "#0070f3",
+  // Optimize for viewport
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
   },
 };
 
@@ -104,109 +99,77 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB">
+    <html lang="en" className={inter.variable}>
       <head>
-        {/* Google Analytics */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-              page_title: document.title,
-              page_location: window.location.href,
-              send_page_view: true
-            });
-          `}
-        </Script>
-
-        {/* Schema.org structured data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "James Burch",
-              url: "https://jamesburch.co.uk",
-              sameAs: [
-                "https://linkedin.com/in/james-burch123",
-                "https://github.com/James-Burch",
-              ],
-              jobTitle: "Full-Stack Developer",
-              worksFor: {
-                "@type": "Organization",
-                name: "Freelance",
-              },
-              address: {
-                "@type": "PostalAddress",
-                addressRegion: "Cambridgeshire",
-                addressCountry: "GB",
-              },
-              email: "james@jamesburch.co.uk",
-              knowsAbout: [
-                "Full-Stack Development",
-                "React",
-                "TypeScript",
-                "Python",
-                "Django",
-                "Machine Learning",
-                "Data Science",
-                "AWS Cloud Services",
-                "Frontend Development",
-                "Backend Development",
-              ],
-              alumniOf: {
-                "@type": "Organization",
-                name: "Code Institute",
-              },
-            }),
-          }}
+        {/* Preload critical resources */}
+        <link
+          rel="preload"
+          href="/images/hero-bg.jpg"
+          as="image"
+          type="image/jpeg"
         />
 
-        {/* Favicon and app icons */}
-        <link rel="icon" href="/favicon.ico" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/site.webmanifest" />
+        {/* DNS prefetch for external resources */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//api.emailjs.com" />
 
-        {/* Preconnect to external domains for performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        {/* Preconnect to reduce connection time */}
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
+          crossOrigin=""
         />
-        <link rel="preconnect" href="https://www.google-analytics.com" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
 
-        {/* DNS prefetch for EmailJS */}
-        <link rel="dns-prefetch" href="//api.emailjs.com" />
+        {/* Critical CSS inline (if you have any critical above-the-fold styles) */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              /* Critical CSS for above-the-fold content */
+              .hero-section{display:flex;align-items:center;justify-content:center;min-height:100vh}
+              .hero-text{opacity:0;animation:fadeIn 0.6s ease-out forwards}
+              @keyframes fadeIn{to{opacity:1}}
+            `,
+          }}
+        />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${inter.className} antialiased`}>
+        {/* Critical loading indicator */}
+        <div
+          id="loading-indicator"
+          className="fixed inset-0 bg-white z-50 flex items-center justify-center"
+        >
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+
         {children}
+
+        {/* Web Vitals monitoring */}
         <WebVitals />
+
+        {/* Non-critical scripts loaded after page load */}
+        <Script
+          id="loading-complete"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.addEventListener('load', function() {
+                document.getElementById('loading-indicator').style.display = 'none';
+              });
+            `,
+          }}
+        />
+
+        {/* Analytics (load after interaction) */}
+        <Script
+          id="analytics"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Add your analytics code here
+              // Google Analytics, etc.
+            `,
+          }}
+        />
       </body>
     </html>
   );
