@@ -1,37 +1,131 @@
 {
-  "name": "james-portfolio",
-  "version": "0.1.0",
+  "name": "james-portfolio-optimized",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --turbo",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "analyze": "ANALYZE=true npm run build",
-    "lighthouse": "npm run build && npm run start & sleep 5 && lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html --chrome-flags='--headless' && kill %1",
-    "performance-audit": "npm run analyze && npm run lighthouse",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "analyze": "cross-env ANALYZE=true npm run build",
+    "lighthouse:desktop": "npm run build && npm run start & sleep 3 && lighthouse http://localhost:3000 --preset=desktop --output html --output-path ./reports/lighthouse-desktop.html --chrome-flags='--headless --no-sandbox' && kill %1",
+    "lighthouse:mobile": "npm run build && npm run start & sleep 3 && lighthouse http://localhost:3000 --output html --output-path ./reports/lighthouse-mobile.html --chrome-flags='--headless --no-sandbox' && kill %1",
+    "lighthouse:ci": "lhci autorun",
+    "performance-audit": "npm run analyze && npm run lighthouse:desktop && npm run lighthouse:mobile",
+    "optimize-images": "next-optimized-images",
+    "clean": "rimraf .next build reports",
+    "prebuild": "npm run clean"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "framer-motion": "^12.23.12",
-    "lucide-react": "^0.540.0",
     "next": "15.4.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-hook-form": "^7.62.0"
+    "react-hook-form": "^7.62.0",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.540.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.4.5",
+    "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.5",
+    "@lighthouse-ci/cli": "^0.12.0",
+    "@next/bundle-analyzer": "^15.4.5",
+    "cross-env": "^7.0.3",
+    "rimraf": "^5.0.0",
     "webpack-bundle-analyzer": "^4.10.1",
-    "lighthouse": "^11.4.0"
+    "sharp": "^0.33.0",
+    "imagemin": "^8.0.1",
+    "imagemin-webp": "^8.0.0",
+    "imagemin-avif": "^0.1.6"
+  },
+  "engines": {
+    "node": ">=18.17.0",
+    "npm": ">=9.0.0"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11"
+  ],
+  "lighthouse-ci": {
+    "ci": {
+      "collect": {
+        "url": "http://localhost:3000",
+        "numberOfRuns": 3
+      },
+      "assert": {
+        "assertions": {
+          "categories:performance": [
+            "error",
+            {
+              "minScore": 0.9
+            }
+          ],
+          "categories:accessibility": [
+            "error",
+            {
+              "minScore": 0.95
+            }
+          ],
+          "categories:best-practices": [
+            "error",
+            {
+              "minScore": 0.95
+            }
+          ],
+          "categories:seo": [
+            "error",
+            {
+              "minScore": 0.95
+            }
+          ],
+          "first-contentful-paint": [
+            "error",
+            {
+              "maxNumericValue": 2000
+            }
+          ],
+          "largest-contentful-paint": [
+            "error",
+            {
+              "maxNumericValue": 2500
+            }
+          ],
+          "cumulative-layout-shift": [
+            "error",
+            {
+              "maxNumericValue": 0.1
+            }
+          ],
+          "speed-index": [
+            "error",
+            {
+              "maxNumericValue": 3000
+            }
+          ]
+        }
+      },
+      "upload": {
+        "target": "temporary-public-storage"
+      }
+    }
+  },
+  "nextConfig": {
+    "experimental": {
+      "optimizePackageImports": [
+        "framer-motion",
+        "lucide-react",
+        "@emailjs/browser",
+        "react-hook-form"
+      ]
+    }
   }
 }
