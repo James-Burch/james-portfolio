@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s | James Burch - Developer Portfolio",
   },
   description:
-    "Experienced full-stack developer and data scientist with 18+ months intensive training. Specializing in React, Python, machine learning, and cloud technologies. Ready to contribute from day one.",
+    "Junior Software Developer specializing in React, Python, and currently learning AWS Cloud Technologies. 18+ months intensive training, 8 projects built. Ready to contribute from day one.",
   keywords: [
     "James Burch",
     "Full-Stack Developer",
@@ -125,6 +125,14 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} antialiased`}>
+        {/* ACCESSIBILITY FIX: Skip link for keyboard navigation */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-[9999]"
+        >
+          Skip to main content
+        </a>
+
         {/* Critical loading indicator */}
         <div
           id="loading-indicator"
@@ -165,7 +173,7 @@ export default function RootLayout({
           strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
-              // Add your analytics code here
+              // Add analytics code here
               // Google Analytics, etc.
             `,
           }}
