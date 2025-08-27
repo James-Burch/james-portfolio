@@ -8,10 +8,16 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
-  // Basic image optimization
+  // Disable image optimization for Netlify (causes issues)
   images: {
+    unoptimized: true,
     formats: ["image/webp", "image/avif"],
   },
+
+  // Output for static hosting
+  output: "export",
+  trailingSlash: true,
+  distDir: ".next",
 
   // Enable compression
   compress: true,

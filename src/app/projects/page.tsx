@@ -896,7 +896,7 @@ export default function ProjectsPage() {
                 transition={{ duration: 2, repeat: Infinity }}
               />
               <span className="text-sm font-semibold text-green-800">
-                8 Projects Complete
+                10 Projects Complete
               </span>
             </motion.div>
 
@@ -934,9 +934,9 @@ export default function ProjectsPage() {
               transition={{ delay: 0.8, duration: 0.6 }}
             >
               {[
-                { label: "Featured Projects", value: "3" },
-                { label: "Technologies", value: "15+" },
-                { label: "Live Demos", value: "8" },
+                { label: "Projects", value: "10+" },
+                { label: "Technologies", value: "20+" },
+                { label: "Live Demos", value: "10" },
               ].map((stat, statIndex) => (
                 <div key={statIndex} className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">

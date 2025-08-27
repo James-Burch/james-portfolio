@@ -681,7 +681,7 @@ export default function About() {
                 <p>
                   After{" "}
                   <strong className="text-gray-900">
-                    18+ months of intensive learning
+                    12 months of intensive learning - 6+ months freelance/personal development
                   </strong>{" "}
                   through Code Institute's Full-Stack Development program, I've
                   discovered my passion for building solutions that make a real

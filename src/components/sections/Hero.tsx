@@ -49,7 +49,7 @@ export default function Hero() {
   const statsData = useMemo(
     () => [
       { number: "18+", label: "Months Learning", icon: "📚" },
-      { number: "8", label: "Projects Built", icon: "🚀" },
+      { number: "10", label: "Projects Built", icon: "🚀" },
       { number: "20+", label: "Technologies", icon: "⚡" },
     ],
     []
