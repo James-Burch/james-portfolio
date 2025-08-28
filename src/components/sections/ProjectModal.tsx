@@ -90,16 +90,17 @@ export default function ProjectModal({
       MongoDB: "bg-green-100 text-green-800 border-green-200",
       HTML: "bg-orange-100 text-orange-800 border-orange-200",
       CSS: "bg-blue-100 text-blue-800 border-blue-200",
-      Tailwind: "bg-cyan-100 text-cyan-800 border-cyan-200",
+      "Tailwind CSS": "bg-cyan-100 text-cyan-800 border-cyan-200",
+      "Next.js": "bg-gray-100 text-gray-800 border-gray-200",
       Bootstrap: "bg-purple-100 text-purple-800 border-purple-200",
       "Scikit-learn": "bg-orange-100 text-orange-800 border-orange-200",
       Pandas: "bg-blue-100 text-blue-800 border-blue-200",
       NumPy: "bg-blue-100 text-blue-800 border-blue-200",
       Matplotlib: "bg-red-100 text-red-800 border-red-200",
       Jupyter: "bg-orange-100 text-orange-800 border-orange-200",
-      Heroku: "bg-purple-100 text-purple-800 border-purple-200",
-      Netlify: "bg-teal-100 text-teal-800 border-teal-200",
-      Git: "bg-red-100 text-red-800 border-red-200",
+      "Google Sheets API": "bg-green-100 text-green-800 border-green-200",
+      "Terminal Interface": "bg-gray-100 text-gray-800 border-gray-200",
+      "Responsive Design": "bg-purple-100 text-purple-800 border-purple-200",
     };
     return colors[tech] || "bg-gray-100 text-gray-800 border-gray-200";
   };
@@ -119,16 +120,10 @@ export default function ProjectModal({
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           {/* Backdrop */}
           <motion.div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -137,7 +132,7 @@ export default function ProjectModal({
 
           {/* Modal Container */}
           <motion.div
-            className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden"
+            className="relative z-10 w-full max-w-5xl max-h-[95vh] bg-white rounded-2xl shadow-2xl overflow-hidden"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -145,7 +140,7 @@ export default function ProjectModal({
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-gray-200 px-6 py-4">
+            <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-gray-200 px-6 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div
@@ -186,13 +181,17 @@ export default function ProjectModal({
             </div>
 
             {/* Scrollable Content */}
-            <div className="overflow-y-auto max-h-[calc(90vh-80px)]">
+            <div className="overflow-y-auto max-h-[calc(95vh-80px)]">
               {/* Hero Image */}
               <div className="relative h-64 md:h-80 bg-gradient-to-br from-blue-50 to-indigo-100">
                 <img
                   src={project.image}
                   alt={project.title}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = "none";
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
@@ -480,7 +479,7 @@ export default function ProjectModal({
               </div>
             </div>
           </motion.div>
-        </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );
