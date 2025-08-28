@@ -64,7 +64,7 @@ export const projectsData = [
     technologies: ["React", "JavaScript", "HTML", "CSS", "Node.js"],
     category: "Full-Stack",
     status: "completed",
-    image: "/images/refinebarbers.png",
+    image: "/images/refinebarbers.webp",
     demoUrl: "https://refinebarbers-website.vercel.app",
     githubUrl: "https://github.com/James-Burch/refinebarbers-website",
     featured: true,
