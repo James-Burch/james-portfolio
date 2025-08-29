@@ -1,9 +1,14 @@
-User-agent: *
-Allow: /
+import { MetadataRoute } from "next";
 
-# Sitemap location
-Sitemap: https://jamesburch.co.uk/sitemap.xml
+export const dynamic = "force-static";
 
-# Optional: Block admin or private areas if you have them
-# Disallow: /admin
-# Disallow: /api
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/api/", "/_next/"],
+    },
+    sitemap: "https://jamesburch.co.uk/sitemap.xml",
+  };
+}
